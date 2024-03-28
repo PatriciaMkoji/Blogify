@@ -1,9 +1,9 @@
 #!/usr/bin/node
+/* Implements Schema & Model defination for blog posts */
 
-//Import mongoose library which is a MongoDB object modelling tool for Node.js
 const mongoose = require('mongoose');
 
-//Block defines the Schema for the blogpost
+/* Schema Defination for Blog posts */
 const blogPostSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -15,7 +15,7 @@ const blogPostSchema = new mongoose.Schema({
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', //Implement user model for authentication
+    ref: 'User', //Refer to User model
     required: true
   },
   createdAt: {
@@ -24,9 +24,7 @@ const blogPostSchema = new mongoose.Schema({
   }
 });
 
-//Creates a Mongoose model named 'BlogPost'
-//It's a class that represents collection of documents on MongoDB database
+/* Creating a Modl for blog posts */
 const BlogPost = mongoose.model('BlogPost', blogPostSchema);
 
-//Exports 'BlogPost' model so that it can be imported and used in other parts
 module.exports = BlogPost;

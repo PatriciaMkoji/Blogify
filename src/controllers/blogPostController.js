@@ -15,7 +15,7 @@ const createBlogPost = async (req, res) => {
   }
 };
 
-/* Read all blog post */
+/* Retrieve all blog post */
 const getAllBlogPosts = async (req, res) => {
   try {
     const blogPosts = await Blogpost.find();
@@ -25,7 +25,7 @@ const getAllBlogPosts = async (req, res) => {
   }
 };
 
-/* Read a single blogpost by ID */
+/* Retrieve a single blogpost by ID */
 const getBlogPostById = async (req, res) => {
   try {
     const {id} = req.params;

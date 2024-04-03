@@ -1,4 +1,3 @@
-#!/usr/bin/node
 /* Implements functionality to track user's read blog posts */
 
 const mongoose = require('mongoose');

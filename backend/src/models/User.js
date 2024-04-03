@@ -1,4 +1,3 @@
-#!/usr/bin/node
 /* Implements User models */
 
 const mongoose = require('mongoose'); /* Imports mongoose */

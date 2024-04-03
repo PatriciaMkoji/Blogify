@@ -1,4 +1,3 @@
-#!/usr/bin/node
 /* Implements Schema & Model defination for blog posts */
 
 const mongoose = require('mongoose');

@@ -1,4 +1,3 @@
-#!/usr/bin/node
 /* Tracks user's read blog posts */
 
 const express = require('express');

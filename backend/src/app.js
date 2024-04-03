@@ -1,6 +1,3 @@
-#!/usr/bin/node
-/* Entry point to application */
-
 const express = require('express');
 const app = express(); /*Creates a web app using Express Framework */
 

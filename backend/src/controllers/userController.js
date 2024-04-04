@@ -9,7 +9,7 @@ const trackReadBlogPost = async (req, res) => {
     const { userId, blogPostId } = req.params;
 
     /* Creates a new UserBlogPos document to track the read blog post */
-    const userBlogPost = new UserBlogPost({
+    const userBlogPost = new userBlogPost({
       user: userId,
       blogPost: blogPostId
     });

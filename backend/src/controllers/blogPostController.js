@@ -5,7 +5,7 @@
 const BlogPost = require('../models/BlogPost');
 
 /* Create a new blog post */
-const createBlogPost = async (req, res) => {
+createBlogPost = async (req, res) => {
   try {
     const {title, content, author } = req.body; /* extracts from request body*/
     const blogPost = await BlogPost.create({ title, content, author });
@@ -58,7 +58,7 @@ if (!updatedBlogPost) {
 const deleteBlogPost = async (req, res) => {
   try {
     const {id} = req.params;
-    const deletedBlogPost) = await BlogPost.findByIdAndDelete(id);
+    const deletedBlogPost = await BlogPost.findByIdAndDelete(id);
     if (!deletedBlogPost) {
       return res.status(404).json({message: 'Blog post not found'});
     }
@@ -72,7 +72,7 @@ const deleteBlogPost = async (req, res) => {
 module.exports = {
     createBlogPost,
     getAllBlogPosts,
-    getBlogPostsById,
+    getBlogPostById,
     updateBlogPost,
     deleteBlogPost
 };

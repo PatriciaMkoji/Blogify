@@ -11,31 +11,21 @@ const User = require('../models/User');
 /* SignUp Route */
 router.post('/signup', async (req, res) => {
   try {
-    const {username, email, password} = req.body;
-  
-    /* Check if the user already exists */
-    let user = await User.findOne({email});
-    if (user) {
-      return res.status(400).json({message: 'User already exists'});
-    }
-
-    /* Password Hashing */
+    const { username, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+      const user = await User.create({ username, email, password: hashedPassword})
+      res.status(201).json({ msg: 'user created', user})
 
-    /* Create new User */
-    user = new User({
-      username,
-      email,
-      password: hashedPassword
-    });
-
-    await user.save();
-
-    /* Generate JWT token */
-    const token = jwt.sign({ userId: user._id}, 'secretkey');
-    res.status(201).json({token});
+    } catch (error) {
+      if (error.code === 11000){
+        res.status(409).json({ msg: 'user exist'})
+      }
+      res.status(500).json({ msg: 'Server error'})
+      console.log(error)
+    }
   } catch (error) {
-    res.status(500).json({error: error.message});
+    console.log(error)
   }
 });
 
@@ -45,7 +35,7 @@ router.post('/signin', async (req, res) => {
     const {email, password} = req.body;
 
     /* Check is User exists */
-    const user = await User.findOne({emai});
+    const user = await User.findOne({email});
     if (!user) {
       return res.status(400).json({message: 'User not found'});
     }
@@ -58,11 +48,24 @@ router.post('/signin', async (req, res) => {
 
     /* Generate JWT token */
     const token = jwt.sign({userId: user._id}, 'secretkey');
-
+    res.cookie('token', token, { httpOnly: true })
     res.status(200).json({token});
   } catch (error) {
     res.status(500).json({error: error.message});
   }
 });
 
-module.export = router;
+/* Sign Out */
+router.get('/logout', async (req, res) => {
+  try {
+    // Clear the JWT cookie
+    res.clearCookie('token');
+    res.status(201).json({ message: 'Successfully logged out' }); // Render logout page
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error logging out' });
+  }
+});
+
+
+module.exports = router;

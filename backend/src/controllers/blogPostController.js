@@ -1,32 +1,39 @@
-#!/usr/bin/node
+//#!/usr/bin/node
 /* Implement CRUD operations for blog post */
+const express = require('express');
+const router = express.Router();
+const User = require('../models/User')
 
 // imports the 'BlogPost' model in this file
 const BlogPost = require('../models/BlogPost');
 
 /* Create a new blog post */
-createBlogPost = async (req, res) => {
+router.post('/blog/post', async (req, res) => {
   try {
-    const {title, content, author } = req.body; /* extracts from request body*/
-    const blogPost = await BlogPost.create({ title, content, author });
+    const {title, content, author:email } = req.body; /* extracts from request body*/
+    const user = await User.findOne({email})
+    if (!user) {
+      return res.status(404).json({ error: 'Author not found' });
+    }
+    const blogPost = await BlogPost.create({ title, content, author:email });
     res.status(200).json(blogPost);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-};
+});
 
 /* Retrieve all blog post */
-const getAllBlogPosts = async (req, res) => {
+router.get('/blog/all', async (req, res) => {
   try {
-    const blogPosts = await Blogpost.find();
+    const blogPosts = await BlogPost.find();
     res.status(200).json(blogPosts);
   } catch (error) {
     res.status(500).json({error: error.message });
   }
-};
+});
 
 /* Retrieve a single blogpost by ID */
-const getBlogPostById = async (req, res) => {
+router.get('/blog/:id', async (req, res) => {
   try {
     const {id} = req.params;
     const blogPost = await BlogPost.findById(id);
@@ -37,14 +44,14 @@ const getBlogPostById = async (req, res) => {
   } catch(error) {
     res.status(500).json({error: error.message});
   }
-};
+});
 
 /* Update blogpost by Id */
-const updateBlogPost = async(req, res) => {
+router.put('/blog/update/:id', async (req, res) => {
   try {
     const {id} = req.params;
     const {title, content} = req.body;
-	  const updatedBlogPost = await BlogPost.findByIdandUpdate(id, {title, content}, {new: true});
+	  const updatedBlogPost = await BlogPost.findByIdAndUpdate(id, {title, content}, {new: true});
 if (!updatedBlogPost) {
     return res.status(404).json({message: 'Blog post not found'});
   }
@@ -52,10 +59,10 @@ if (!updatedBlogPost) {
   } catch (error) {
     res.status(500).json({error: error.message});
   }
-};
+});
 
 /* Delete blogpost by Id */
-const deleteBlogPost = async (req, res) => {
+router.delete('/blog/delete/:id', async (req, res) => {
   try {
     const {id} = req.params;
     const deletedBlogPost = await BlogPost.findByIdAndDelete(id);
@@ -66,13 +73,7 @@ const deleteBlogPost = async (req, res) => {
   } catch (error) {
     res.status(500).json({error: error.message});
   }
-};
+});
 
-/* Exports th object containing multiple functions */
-module.exports = {
-    createBlogPost,
-    getAllBlogPosts,
-    getBlogPostById,
-    updateBlogPost,
-    deleteBlogPost
-};
+/* Exports the router object */
+module.exports = router;

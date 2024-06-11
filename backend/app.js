@@ -29,7 +29,7 @@ app.use((err, req, res, next) => {
 /* Routes*/
 app.use('/api/users', require('./src/controllers/authController'));
 app.use('/api/blogpost', require('./src/controllers/blogPostController'));
-app.use('/api/signup', require('./src/controllers/authController'));
+//app.use('/api/signup', require('./src/controllers/authController'));
 
 /* Start the Server */
 const PORT = process.env.PORT || 3000;
